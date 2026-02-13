@@ -1,5 +1,6 @@
 ## Fork & Credit Notice
-Build Gki Android 12.5.10 Android 14 6.1 Android 15.6.6
+Build Gki Android 12.5.10 
+you are not allowed to steal or fork here.Make it yourself, no need to use my script
 
 If you fork this repository, please provide proper credit to the original source.
 
