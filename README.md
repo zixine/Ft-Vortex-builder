@@ -4,8 +4,8 @@ you are not allowed to steal or fork here.
 Make it yourself, no need to use my script
 you get recognition from other people, thinking that you are the kernel maker.
 I don't need recognition... everything makes me disappointed 
-WARNING!!!! FORKING HERE IS PROHIBITED, STEALING THIS SCRIPT IS PROHIBITED
 
+WARNING!!!! FORKING HERE IS PROHIBITED, STEALING THIS SCRIPT IS PROHIBITED
 Fixing bugs and maintaining this kernel build requires significant time and effort.  
 Do **not** claim that you are the author of the GitHub Actions / YML scripts or this kernel build.
 
