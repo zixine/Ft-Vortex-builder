@@ -376,8 +376,8 @@ jobs:
       - name: Package Kernel (AnyKernel3)
         run: |
           echo "🚀 Starting kernel packaging process..."
-          ANYKERNEL_REPO="https://github.com/linastorvaldz/anykernel"
-          ANYKERNEL_BRANCH="android12-5.10"
+          ANYKERNEL_REPO="https://github.com/Kingfinik98/AnyKernel3"
+          ANYKERNEL_BRANCH="master"
           KERNEL_IMAGE="$GITHUB_WORKSPACE/gki/out/android12-5.10/dist/Image"
           echo "🔽 Cloning anykernel from $ANYKERNEL_REPO"
           git clone -q --depth=1 $ANYKERNEL_REPO -b $ANYKERNEL_BRANCH anykernel
