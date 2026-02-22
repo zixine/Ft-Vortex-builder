@@ -119,8 +119,8 @@ jobs:
       - name: Setup ReSukiSU & SUSFS
         run: |
           cd gki/common
-          echo "[6/12] Setup ReSukiSU & SUSFS"
-          curl -LSs "https://raw.githubusercontent.com/Kingfinik98/ReSukiSU/refs/heads/main/kernel/setup.sh" | bash -s main
+          echo "[6/12] Setup VorteXSU & SUSFS"
+          curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
           git clone https://gitlab.com/simonpunk/susfs4ksu/ -b gki-android12-5.10 sus
           rm -rf sus/.git
           susfs=sus/kernel_patches
