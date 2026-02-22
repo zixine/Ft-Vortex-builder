@@ -740,6 +740,9 @@ jobs:
           ⚙️ *Performance Tuning*: $PERF_TUNE
           🔰 *Compiler*: ${{ github.event.inputs.clang_version }}"
 
+          # Enable globstar to find files in subdirectories
+          shopt -s globstar
+          
           for file in artifacts/**/*.zip; do
             if [ -f "$file" ]; then
               echo "📤 Uploading $(basename $file)..."
