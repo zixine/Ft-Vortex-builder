@@ -334,7 +334,7 @@ jobs:
 
           elif [ "$ROOT_VARIANT" == "ResukiSU" ]; then
             rm -rf drivers/staging/kernelsu
-            curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
+            curl -LSs "https://raw.githubusercontent.com/zixine/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
             git clone https://gitlab.com/simonpunk/susfs4ksu/ -b gki-android12-5.10 sus
             rm -rf sus/.git
             susfs=sus/kernel_patches
