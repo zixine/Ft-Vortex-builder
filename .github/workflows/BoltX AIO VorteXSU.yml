@@ -525,46 +525,17 @@ jobs:
             echo "⏭️ Skipping SUSFS fix (Not needed for ${{ matrix.variant }})"
           fi
 
-      - name: Set version
+      - name: Apply Versioning
         working-directory: gki/common
         run: |
+          NAME="${{ github.event.inputs.kernel_name }}"
+          [ -z "$NAME" ] && NAME="Zixine-Elysium-inline-2.63"
+          FINAL_TAG="-${NAME}"
           echo "" > scripts/setlocalversion
-          chmod +x scripts/setlocalversion
-          
-          KERNEL_NAME_INPUT="${{ github.event.inputs.kernel_name }}"
-          ROOT_VARIANT="${{ matrix.variant }}"
-          HOOK_METHOD="${{ matrix.hook }}"
-          PERF="${{ github.event.inputs.performance_patch }}"
-
-          SUFFIX=""
-          if [ -n "$KERNEL_NAME_INPUT" ]; then
-            SUFFIX="-$KERNEL_NAME_INPUT"
-          fi
-
-          if [ "$ROOT_VARIANT" == "KernelSU-Next" ]; then SUFFIX="$SUFFIX-Next";
-          elif [ "$ROOT_VARIANT" == "KernelSU-Next (All Managers)" ]; then SUFFIX="$SUFFIX-Next-AllMgr";
-          elif [ "$ROOT_VARIANT" == "Rissu (MamboSU)" ]; then SUFFIX="$SUFFIX-Rissu";
-          elif [ "$ROOT_VARIANT" == "ResukiSU" ]; then SUFFIX="$SUFFIX-ResukiSU";
-          elif [ "$ROOT_VARIANT" == "Wild KSU" ]; then SUFFIX="$SUFFIX-Wild";
-          elif [ "$ROOT_VARIANT" == "Non-KSU" ]; then SUFFIX="$SUFFIX-NonKSU";
-          fi
-
-          if [ "$ROOT_VARIANT" == "KernelSU-Next" ] || [ "$ROOT_VARIANT" == "KernelSU-Next (All Managers)" ] || [ "$ROOT_VARIANT" == "Rissu (MamboSU)" ] || [ "$ROOT_VARIANT" == "Wild KSU" ]; then
-             if [ "$HOOK_METHOD" = "susfs" ]; then SUFFIX="$SUFFIX-ඞ"; fi
-          elif [ "$ROOT_VARIANT" == "ResukiSU" ]; then
-             SUFFIX="$SUFFIX-ඞ"
-          fi
-
-          if [ "$PERF" = "Snapdragon" ]; then SUFFIX="$SUFFIX-Qcom";
-          elif [ "$PERF" = "MediaTek" ]; then SUFFIX="$SUFFIX-Mtk";
-          elif [ "$PERF" = "Universal" ]; then SUFFIX="$SUFFIX-Univ";
-          fi
-          
-          echo "Setting custom kernel name: $SUFFIX"
           if grep -q '^EXTRAVERSION *=' Makefile; then
-            sed -i "s/^EXTRAVERSION *=.*/EXTRAVERSION = $SUFFIX/" Makefile
+            sed -i "s/^EXTRAVERSION *=.*/EXTRAVERSION = $FINAL_TAG/" Makefile
           else
-            echo "EXTRAVERSION = $SUFFIX" >> Makefile
+            echo "EXTRAVERSION = $FINAL_TAG" >> Makefile
           fi
 
       - name: Setup Clang
@@ -651,8 +622,8 @@ jobs:
       - name: Package Kernel (AnyKernel3)
         run: |
           echo "🚀 Starting kernel packaging process..."
-          ANYKERNEL_REPO="https://github.com/Kingfinik98/AnyKernel3"
-          ANYKERNEL_BRANCH="master"
+          ANYKERNEL_REPO="https://github.com/zixine/anykernel"
+          ANYKERNEL_BRANCH="main"
           KERNEL_IMAGE="$GITHUB_WORKSPACE/gki/out/android12-5.10/dist/Image"
           git clone -q --depth=1 $ANYKERNEL_REPO -b $ANYKERNEL_BRANCH anykernel
           
@@ -689,13 +660,13 @@ jobs:
           elif [ "$ROOT_VARIANT" == "ResukiSU" ]; then ROOT_NAME="ResukiSU";
           else ROOT_NAME="Stock / No Root"; fi
 
-          CAPTION="🐧 *Linux Version*: ${{ env.LINUX_VERSION }}
-          📅 *Build Date*: ${{ env.KBUILD_BUILD_TIMESTAMP }}
-          🛡️ *Root Method*: $ROOT_NAME
-          ඞ *SuSFS*: ${{ env.SUSFS_VERSION }}
-          🔰 *Compiler*: ${{ env.COMPILER_STRING }}
-          ⚙️ *Performance*: ${{ github.event.inputs.performance_patch }}"
-
+          CAPTION=" *Linux Version*: ${{ env.LINUX_VERSION }}
+           *Build Date*: ${{ env.KBUILD_BUILD_TIMESTAMP }}
+           *Root Method*: $ROOT_NAME
+           *SuSFS*: ${{ env.SUSFS_VERSION }}
+           *Compiler*: ${{ env.COMPILER_STRING }}
+           *Performance*: ${{ github.event.inputs.performance_patch }}
+           *script build*: "by Vortex maintainer"
           curl -F "chat_id=$TG_CHAT_ID" \
                -F "document=@$ZIP_FILE" \
                -F "caption=$CAPTION" \
@@ -735,10 +706,11 @@ jobs:
           PERF_TUNE="${{ github.event.inputs.performance_patch }}"
 
           CAPTION="🐧 *BoltX All-in-One Release*
-          📅 *Build Date*: $(date +"%Y-%m-%d %H:%M:%S %Z")
-          🛡️ *Variants*: ResukiSU, KernelSU-Next, Rissu, Wild KSU, Non-KSU
-          ⚙️ *Performance Tuning*: $PERF_TUNE
-          🔰 *Compiler*: ${{ github.event.inputs.clang_version }}"
+          *Build Date*: $(date +"%Y-%m-%d %H:%M:%S %Z")
+          *Variants*: ResukiSU, KernelSU-Next, Rissu, Wild KSU, Non-KSU
+          *Performance Tuning*: $PERF_TUNE
+          *Compiler*: ${{ github.event.inputs.clang_version }}
+          *script build*: "by Vortex maintainer"
 
           # Enable globstar to find files in subdirectories
           shopt -s globstar
